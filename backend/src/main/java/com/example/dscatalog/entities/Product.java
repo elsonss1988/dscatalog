@@ -18,7 +18,7 @@ public class Product implements Serializable {
     private Long id;
     private String name;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition ="TEXT")
     private String description;
     private Double price;
     private String  imgUrl;

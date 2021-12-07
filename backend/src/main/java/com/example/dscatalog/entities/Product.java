@@ -93,9 +93,7 @@ public class Product implements Serializable {
         this.imgUrl = imgUrl;
     }
 
-    public List<Category> getCategories() {
-        return (List<Category>) categories;
+    public Set<Category> getCategories() {
+        return categories;
     }
-
-
 }

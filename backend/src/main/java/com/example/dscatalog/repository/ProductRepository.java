@@ -1,2 +1,8 @@
-package com.example.dscatalog.repository;public interface ProductRepository {
+package com.example.dscatalog.repository;
+
+import com.example.dscatalog.entities.Product;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ProductRepository extends JpaRepository<Product,Long> {
+
 }

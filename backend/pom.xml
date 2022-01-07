@@ -73,11 +73,10 @@
             <exclusions>
                 <exclusion>
                     <groupId>org.junit.vintage</groupId>
-                    <artifactId>org.junit.vintage</artifactId>
+                    <artifactId>junit-vintage-engine</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
-
     </dependencies>
 
     <build>

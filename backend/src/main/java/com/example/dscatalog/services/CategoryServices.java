@@ -2,7 +2,7 @@ package com.example.dscatalog.services;
 
 import com.example.dscatalog.dto.CategoryDTO;
 import com.example.dscatalog.entities.Category;
-import com.example.dscatalog.repository.CategoryRepository;
+import com.example.dscatalog.repositories.CategoryRepository;
 import com.example.dscatalog.services.exceptions.DataBaseException;
 import com.example.dscatalog.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class CategoryServices {

@@ -4,15 +4,14 @@ import com.example.dscatalog.dto.CategoryDTO;
 import com.example.dscatalog.dto.ProductDTO;
 import com.example.dscatalog.entities.Category;
 import com.example.dscatalog.entities.Product;
-import com.example.dscatalog.repository.CategoryRepository;
-import com.example.dscatalog.repository.ProductRepository;
+import com.example.dscatalog.repositories.CategoryRepository;
+import com.example.dscatalog.repositories.ProductRepository;
 import com.example.dscatalog.services.exceptions.DataBaseException;
 import com.example.dscatalog.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,7 +33,7 @@ public class ProductServices {
     }
 
     @Transactional(readOnly=true)
-    public ProductDTO findbyId(Long id){
+    public ProductDTO findById(Long id){
         Optional <Product> product =productRepository.findById(id);
         Product entity= product.orElseThrow(()->new ResourceNotFoundException("Entity Not Found"));
         return new ProductDTO(entity, entity.getCategories());

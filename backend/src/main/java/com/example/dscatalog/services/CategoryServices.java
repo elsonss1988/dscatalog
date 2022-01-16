@@ -65,6 +65,8 @@ public class CategoryServices {
             throw new ResourceNotFoundException("Id not found " +id);
         }catch(DataIntegrityViolationException e){
             throw new DataBaseException("Integrity Violation");
+        }catch(Exception e){
+            e.printStackTrace();
         }
     }
 

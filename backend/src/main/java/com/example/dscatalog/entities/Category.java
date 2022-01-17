@@ -57,7 +57,7 @@ public class Category implements Serializable{
     }
 
     public Set<Product> getProducties() {
-        return producties;
+        return products;
     }
 
     @PrePersist

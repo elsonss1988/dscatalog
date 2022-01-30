@@ -1,13 +1,21 @@
 package com.example.dscatalog.entities;
 
-import javax.persistence.OneToMany;
+import com.example.dscatalog.dto.RoleDTO;
+import org.hibernate.service.spi.InjectService;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Objects;
 
+@Entity
+@Table(name="tb_role")
+
 public class Role implements Serializable{
     public static final Long serialVersionUID=1L;
 
+    @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
     private String authority;
 
@@ -16,6 +24,10 @@ public class Role implements Serializable{
     public Role(Long id, String authority) {
         this.id = id;
         this.authority = authority;
+    }
+
+    public Role(RoleDTO entity) {
+        this.authority=entity.getAuthority();
     }
 
     public Long getId() {

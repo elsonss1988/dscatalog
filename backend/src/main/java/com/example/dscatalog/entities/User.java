@@ -1,24 +1,33 @@
 package com.example.dscatalog.entities;
 
-import javax.persistence.ManyToOne;
+import com.example.dscatalog.dto.UserDTO;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+@Entity
+@Table(name="tb_user")
 public class User implements Serializable{
     public static final Long serialVersionUID=1L;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String firstName;
     private String lastName;
     private String email;
     private String password;
 
-    public User(){};
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable( name="tb_user_role",
+            joinColumns=@JoinColumn(name="user_id"),
+            inverseJoinColumns=@JoinColumn(name="role_id"))
+    private Set<Role> roles= new HashSet<>();
 
-    @ManyToOne
-    public Set<Role> roles= new HashSet<>();
+    public User(){};
 
     public User(Long id, String firstName, String lastName, String email, String password) {
         this.id = id;
@@ -26,6 +35,12 @@ public class User implements Serializable{
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+    }
+
+    public User(UserDTO entity) {
+        this.firstName= entity.getFirstName();
+        this.lastName = entity.getLastName();
+        this.email = entity.getEmail();
     }
 
     public Long getId() {

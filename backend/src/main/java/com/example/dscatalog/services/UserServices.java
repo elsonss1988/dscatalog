@@ -1,0 +1,87 @@
+package com.example.dscatalog.services;
+
+import com.example.dscatalog.dto.UserDTO;
+import com.example.dscatalog.entities.Role;
+import com.example.dscatalog.entities.User;
+import com.example.dscatalog.repositories.RoleRepository;
+import com.example.dscatalog.repositories.UserRepository;
+import com.example.dscatalog.services.exceptions.DataBaseException;
+import com.example.dscatalog.services.exceptions.ResourceNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+@Service
+public class UserServices {
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
+    private UserRepository repository;
+
+    @Autowired
+    private RoleRepository roleRepository;
+
+    @Transactional(readOnly = true)
+    public List<UserDTO> findAll() {
+        List<User> list = repository.findAll();
+        return list.stream().map(x -> new UserDTO(x)).collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public UserDTO findBy(Long id) {
+        Optional<User> user = repository.findById(id);
+        return new UserDTO(user.orElseThrow(() -> new ResourceNotFoundException(id + "Nao encontrado")));
+    }
+
+    @Transactional
+    public UserDTO insert(User user) {
+        User entity = new User();
+        entity.setFirstName(user.getFirstName());
+        entity.setLastName(user.getLastName());
+        entity.setEmail(user.getEmail());
+        entity.setPassword(passwordEncoder.encode(user.getPassword()));
+        for (Role role: user.getRoles()) {
+            Role roleAdd =roleRepository.getOne(role.getId());
+            entity.getRoles().add(role);
+        }
+        return new UserDTO(repository.save(entity));
+    }
+
+    @Transactional
+    public UserDTO update(User user, Long id) {
+        try {
+            User userRecover = new User(findBy(id));
+            userRecover.setFirstName(user.getFirstName());
+            userRecover.setLastName(user.getLastName());
+            userRecover.setEmail(user.getEmail());
+            userRecover.getRoles().clear();
+            for (Role role : user.getRoles()) {
+                Role roleAdd = roleRepository.getById(role.getId());
+                userRecover.getRoles().add(roleAdd);
+            }
+            return new UserDTO(repository.save(userRecover));
+        } catch (ResourceNotFoundException e) {
+            throw new ResourceNotFoundException(id + " Nao encontrado");
+        } catch (DataIntegrityViolationException e) {
+            throw new DataBaseException(id + " Associado a algum role");
+        }
+    }
+
+    public void delete(Long id){
+        try {
+            repository.deleteById(id);
+        }catch (ResourceNotFoundException e) {
+            throw new ResourceNotFoundException(id + " Nao encontrado");
+        } catch (DataIntegrityViolationException e) {
+            throw new DataBaseException(id + " Associado a algum role");
+        }
+    }
+}

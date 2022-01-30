@@ -1,6 +1,8 @@
 package com.example.dscatalog.services;
 
+import com.example.dscatalog.dto.RoleDTO;
 import com.example.dscatalog.dto.UserDTO;
+import com.example.dscatalog.dto.UserInsertDTO;
 import com.example.dscatalog.entities.Role;
 import com.example.dscatalog.entities.User;
 import com.example.dscatalog.repositories.RoleRepository;
@@ -42,29 +44,29 @@ public class UserServices {
     }
 
     @Transactional
-    public UserDTO insert(User user) {
+    public UserDTO insert(UserInsertDTO user) {
         User entity = new User();
         entity.setFirstName(user.getFirstName());
         entity.setLastName(user.getLastName());
         entity.setEmail(user.getEmail());
         entity.setPassword(passwordEncoder.encode(user.getPassword()));
-        for (Role role: user.getRoles()) {
-            Role roleAdd =roleRepository.getOne(role.getId());
-            entity.getRoles().add(role);
+        for (RoleDTO role: user.getRoles()) {
+            Role roleAdd =roleRepository.getById(role.getId());
+            entity.getRoles().add(roleAdd);
         }
         return new UserDTO(repository.save(entity));
     }
 
     @Transactional
-    public UserDTO update(User user, Long id) {
+    public UserDTO update(UserDTO user, Long id) {
         try {
             User userRecover = new User(findBy(id));
             userRecover.setFirstName(user.getFirstName());
             userRecover.setLastName(user.getLastName());
             userRecover.setEmail(user.getEmail());
             userRecover.getRoles().clear();
-            for (Role role : user.getRoles()) {
-                Role roleAdd = roleRepository.getById(role.getId());
+            for (RoleDTO roleDTO : user.getRoles()) {
+                Role roleAdd = roleRepository.getById(roleDTO.getId());
                 userRecover.getRoles().add(roleAdd);
             }
             return new UserDTO(repository.save(userRecover));

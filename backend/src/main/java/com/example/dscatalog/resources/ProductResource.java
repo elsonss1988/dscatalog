@@ -4,13 +4,12 @@ import com.example.dscatalog.dto.ProductDTO;
 import com.example.dscatalog.services.ProductServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 
 @RestController
@@ -34,7 +33,7 @@ public class ProductResource {
     }
 
     @PostMapping
-    public ResponseEntity<ProductDTO> insert(@RequestBody ProductDTO dto){
+    public ResponseEntity<ProductDTO> insert(@Valid @RequestBody ProductDTO dto){
             dto=productServices.insert(dto);
             URI uri= ServletUriComponentsBuilder
                     .fromCurrentRequestUri()
@@ -45,7 +44,7 @@ public class ProductResource {
     }
 
     @PutMapping(value="/{id}")
-    public ResponseEntity<ProductDTO> update(@RequestBody ProductDTO dto, @PathVariable Long id){
+    public ResponseEntity<ProductDTO> update(@Valid @RequestBody ProductDTO dto, @PathVariable Long id){
         //ProductDTO catDto=productServices.findbyId(id);
         //catDto.setName(dto.getName());
         //dto=productServices.update(catDto);

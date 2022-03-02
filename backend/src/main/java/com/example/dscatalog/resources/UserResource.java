@@ -2,6 +2,7 @@ package com.example.dscatalog.resources;
 
 import com.example.dscatalog.dto.UserDTO;
 import com.example.dscatalog.dto.UserInsertDTO;
+import com.example.dscatalog.dto.UserUpdateDTO;
 import com.example.dscatalog.services.UserServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -44,8 +45,8 @@ public class UserResource {
 
 
     @PutMapping(value="{/id}")
-    public ResponseEntity<UserDTO> update(@Valid @RequestBody UserDTO user, @PathVariable Long id){
-        UserDTO dto = services.update(user,id);
+    public ResponseEntity<UserUpdateDTO> update(@Valid @RequestBody UserUpdateDTO user, @PathVariable Long id){
+        UserUpdateDTO dto = services.update(user,id);
         return ResponseEntity.ok().body(dto);
     }
 

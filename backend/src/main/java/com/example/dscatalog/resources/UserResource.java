@@ -4,6 +4,8 @@ import com.example.dscatalog.dto.UserDTO;
 import com.example.dscatalog.dto.UserInsertDTO;
 import com.example.dscatalog.dto.UserUpdateDTO;
 import com.example.dscatalog.services.UserServices;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,10 +15,13 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
+
 @RestController
 @RequestMapping(value="/users")
 
 public class UserResource {
+
+    public static Logger logger = LoggerFactory.getLogger(UserResource.class);
     @Autowired
     private UserServices services;
 
@@ -28,6 +33,7 @@ public class UserResource {
 
     @GetMapping(value="{/id}")
     public ResponseEntity<UserDTO> findBy(@PathVariable Long id){
+        logger.info("ïd"+id);
         UserDTO dto = services.findBy(id);
         return ResponseEntity.ok().body(dto);
     }

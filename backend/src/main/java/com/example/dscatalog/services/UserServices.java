@@ -47,6 +47,7 @@ public class UserServices implements UserDetailsService {
 
     @Transactional(readOnly = true)
     public UserDTO findBy(Long id) {
+        logger.info("id"+id);
         Optional<User> user = repository.findById(id);
         return new UserDTO(user.orElseThrow(() -> new ResourceNotFoundException(id + "Nao encontrado")));
     }

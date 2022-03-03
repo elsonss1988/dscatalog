@@ -1,6 +1,6 @@
 package com.example.dscatalog.config;
 
-import com.example.dscatalog.util.JwtTokenEnhancer;
+import com.example.dscatalog.components.JwtTokenEnhancer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -65,6 +65,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         endpoints
                 .authenticationManager(authenticationManager)
                 .tokenStore(tokenStore)
-                .accessTokenConverter(accessTokenConverter).tokenEnhancer(chain);
+                .accessTokenConverter(accessTokenConverter)
+                .tokenEnhancer(chain);
     }
 }
